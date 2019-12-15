@@ -6,7 +6,7 @@ const initialMovie = {
     title: '',
     director: '',
     metascore: 0,
-    stars: ['','','']
+    stars: ['1', '2', '3']
 }
 const UpdateMovie = (props) => {
     const [movie, setMovie] = useState(initialMovie);
@@ -25,14 +25,15 @@ const UpdateMovie = (props) => {
     const handleChange = e => {
         e.persist();
         let value = e.target.value;
-        if(e.target.name.includes('stars')) {
+        let newName = e.target.name;
+        if(e.target.value.includes(0)) {
             console.log(e.target.name)
             setMovie ({
                 ...movie, 
-                [e.target.name]: [value]
+                [newName[0]]: value
             })
             console.log(e.target.name)
-            
+            console.log(movie.stars[newName])
             console.log(value)
         }
         else {
@@ -40,6 +41,8 @@ const UpdateMovie = (props) => {
             ...movie,
             [e.target.name]: e.target.value
             })
+            console.log(movie.stars)
+            console.log(e.target.name)
             console.log(e.target.value)
         }
     }
@@ -83,29 +86,19 @@ const UpdateMovie = (props) => {
                     onChange={handleChange}
                     value={movie.metascore}
                 />
-                <input
-                    type="text"
-                    name={`stars[${0}]`}
-                    placeholder="Actors"
-                    onChange={handleChange}
-                    value={movie.stars[0]}
-                />
-                <input
-                    type="text"
-                    name={`stars[${1}]`}
-                    number='1'
-                    placeholder="Actors"
-                    onChange={handleChange}
-                    value={movie.stars[1]}
-                />
-                <input
-                    type="text"
-                    name={`stars[${2}]`}
-                    number='2'
-                    placeholder="Actors"
-                    onChange={handleChange}
-                    value={movie.stars[2]}
-                />
+                {movie.stars.map((n, index) => (
+                    <input
+                        key={index}
+                        value={n}
+                        name={`stars${index}`}
+                        onChange = {e => {
+                            movie.stars[index] = e.target.value;
+                            setMovie ({
+                                ...movie,
+                            })  
+                        }}
+                    />
+                ))}
                 <button>Update</button>
             </form>
         </div>
